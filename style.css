@@ -24,3 +24,7 @@
 #NH-chrome-popupover .NH-popover-content {
     padding: 9px 14px;
 }
+
+#NH-chrome-popupover #copy-addr {
+    cursor: pointer;
+}
