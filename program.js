@@ -18,8 +18,8 @@ jQuery(function () {
         if(e.target.id == "NH-chrome-popupover")
           return;
        //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
-       if($(e.target).closest('#NH-chrome-popupover').length)
-          return;
+      // if($(e.target).closest('#NH-chrome-popupover').length)
+        //  return;
         
      
 
@@ -29,45 +29,60 @@ jQuery(function () {
             selection = document.selection.createRange();
         }
 
+        
 
         var X = $('body').offset().left;
         var Y = $('body').offset().top;
 
         popup.css({ left: e.pageX, top: e.pageY + 30 })
         var selectionStr = selection.toString().trim()
-        if (selectionStr != '' && selectionStr.length == 42) {
+        //no special chars allowed like url
+        var format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+        //filter out middle spaces..that means it is a word not an address..
+        if (selectionStr != '' && selectionStr.length > 25 && selectionStr.length <= 42 && selectionStr.indexOf(' ') < 0  && !format.test(selectionStr)) {
             popup.show()
             popupContent.html('loading..')
 
             $.get(details_api_uri + '/' + selectionStr, function (data) {
+                
+                if (window.getSelection) {
+                    if (window.getSelection().empty) {  // Chrome
+                        window.getSelection().empty();
+                    } else if (window.getSelection().removeAllRanges) {  // Firefox
+                        window.getSelection().removeAllRanges();
+                    }
+                }
+
                 if (data && data.addr && data.addr.safeuser) {
 
-                    var status = (data.addr.safeuser.status) ? data.addr.safeuser.status : 'Not secured';
-                    var formattedData = `<a target="_new" href="${data.addr.safeuser.alias}">${data.addr.safeuser.alias}</a> <br />  Status : ${status} | Credit Ratings : ${data.addr.safeuser.credit_score} <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
-                    // if (window.getSelection) {
-                    //     if (window.getSelection().empty) {  // Chrome
-                    //         window.getSelection().empty();
-                    //     } else if (window.getSelection().removeAllRanges) {  // Firefox
-                    //         window.getSelection().removeAllRanges();
-                    //     }
-                    // }
+                    var status = (data.addr.status == 0) ? '<span class="red">Not secured</span>' : '<span class="green">Secured</span>' ;
+                var formattedData = `<a target="_new" href="${data.addr.safeuser.alias}">${data.addr.safeuser.alias}</a> <br />  Status :  ${status} | Credit Ratings : ${data.addr.safeuser.credit_score} <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
+                  
+        
                     popupContent.html(formattedData)
                     
-                    $("#copy-addr").click(function () {
-                        var $temp = $("<input>");
-                        $("body").append($temp);
-                        $temp.val(selectionStr).select();
-                        document.execCommand("copy");
-                        $temp.remove();
-                    })
+                  
                 }
                 else {
-                    popup.hide()
+                    var formattedData = `<br /> Records not found. Submit Using  <a target="_new" href="https://safeName.io">SafeName.io</a> <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
+
+                    popupContent.html(formattedData)
+                    //popup.hide()
                 }
 
+                $("#copy-addr").click(function () {
+                    var $temp = $("<input>");
+                    $("body").append($temp);
+                    $temp.val(selectionStr).select();
+                    document.execCommand("copy");
+                    $temp.remove();
+                })
 
             });
-            details_api_uri
+            
+
+
+       
 
 
         } else {
@@ -85,6 +100,8 @@ jQuery(function () {
 
     });
 
+
+   
    
 
 })

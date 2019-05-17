@@ -28,3 +28,9 @@
 #NH-chrome-popupover #copy-addr {
     cursor: pointer;
 }
+.green {
+    color: #02f395;
+}
+.red {
+    color: #fb4343;
+}
