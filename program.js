@@ -1,5 +1,7 @@
 jQuery(function () {
 
+    
+    //var details_api_uri = 'http://localhost:8000/sn'
     var details_api_uri = 'http://safename.io/sn'
     
     if(location.protocol == 'https:') {
@@ -15,8 +17,12 @@ jQuery(function () {
 
     jQuery("body").mouseup(function (e) {
 
-        if(e.target.id == "NH-chrome-popupover")
-          return;
+     //   console.log('returning');
+        if(e.target.id == "NH-chrome-popupover") {
+            console.log('returning');
+            return;  
+        }
+          
        //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
       // if($(e.target).closest('#NH-chrome-popupover').length)
         //  return;
@@ -53,19 +59,21 @@ jQuery(function () {
                     }
                 }
 
-                if (data && data.addr && data.addr.safeuser) {
+                if (data && data.address) {
+                    var formattedData = ""
 
-                    var status = (data.addr.status == 0) ? '<span class="red">Not secured</span>' : '<span class="green">Secured</span>' ;
-                var formattedData = `<a target="_new" href="${data.addr.safeuser.alias}">${data.addr.safeuser.alias}</a> <br />  Status :  ${status} | Credit Ratings : ${data.addr.safeuser.credit_score} <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
+                    var status = (data.address_status == "secure" || data.address_status == "verified") ? `<span class="green">${data.address_status}</span>` : `<span class="red">${data.address_status}</span>` ;
+                    var profile = (data.address_safename)  ?`<a target="_new" href="https://${data.address_safename.toLowerCase()}.safename.io">${data.address_safename}.safename.io</a> <br />`:""
+                 formattedData = ` ${profile}  Status :  ${status} | Credit Ratings : ${data.profile_risk_score} <br /> ${data.address} <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a> `;
                   
-        
+                    popup.removeClass('not-found')         
                     popupContent.html(formattedData)
                     
                   
                 }
                 else {
-                    var formattedData = `<br /> Records not found. Submit Using  <a target="_new" href="https://safeName.io">SafeName.io</a> <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
-
+                    var formattedData = ` Records not found. Submit Using  <a target="_new" href="https://safeName.io">SafeName.io</a> <a alt="copy address" title="copy address" id="copy-addr"><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a>`;
+                    popup.addClass('not-found')                    
                     popupContent.html(formattedData)
                     //popup.hide()
                 }

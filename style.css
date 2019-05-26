@@ -2,7 +2,7 @@
 
 #NH-chrome-popupover {
     width: 400px;
-    height: 80px;
+    height: 100px;
     top: 0px;
     left: 0px;
     position: absolute;
@@ -21,12 +21,20 @@
     display: none;
 
 }
+#NH-chrome-popupover.not-found {
+    height: 60px;
+}
+
 #NH-chrome-popupover .NH-popover-content {
     padding: 9px 14px;
 }
 
 #NH-chrome-popupover #copy-addr {
     cursor: pointer;
+}
+#NH-chrome-popupover.not-found .NH-popover-content {
+    padding-bottom: 30px;
+    padding-top: 15px;
 }
 .green {
     color: #02f395;
