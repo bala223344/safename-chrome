@@ -6,7 +6,7 @@
     top: 0px;
     left: 0px;
     position: absolute;
-
+    overflow-y: auto;
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 6px;
@@ -33,7 +33,7 @@
     cursor: pointer;
 }
 #NH-chrome-popupover.not-found .NH-popover-content {
-    padding-bottom: 30px;
+    padding-bottom: 10px;
     padding-top: 15px;
 }
 .green {

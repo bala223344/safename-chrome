@@ -1,6 +1,6 @@
 {
-  "name": "Safename",
-  "version": "1.0",
+  "name": "Safename-dev",
+  "version": "1.0.1",
   "description": "Get safename details",
   "permissions": [
     "tabs",
