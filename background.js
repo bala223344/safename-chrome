@@ -1,11 +1,38 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-
-
 'use strict';
 
+var api_uri = 'http://safename.io'
+
+if(location.protocol == 'https:') {
+     api_uri = 'https://safename.io'
+}
+
+//var api_uri = 'http://localhost:8000'
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+   
+    if (request.contentScriptQuery == "queryAlias") {
+      var url = api_uri + '/api/alias/' +
+              encodeURIComponent(request.alias);
+      fetch(url)
+          .then(response => response.text())
+          .then(text => {sendResponse(text)})
+          .catch(error => console.log(error)
+          )
+      return true;  // Will respond asynchronously.
+    }
+     else if (request.contentScriptQuery == "querySafename") {
+      var url = api_uri + '/api/sn/' +
+              encodeURIComponent(request.sn);
+      fetch(url)
+          .then(response => response.text())
+          .then(text => {sendResponse(text)})
+          .catch(error => console.log(error)
+          )
+      return true;  // Will respond asynchronously.
+    }
+  
+  });
 
 chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){
   

@@ -1,18 +1,6 @@
 jQuery(function () {
 
-
-    var api_uri = 'http://localhost:8000'
-
-    //   var api_uri = 'http://safename.io'
-
-    // if(location.protocol == 'https:') {
-    //      api_uri = 'https://safename.io'
-    // }
-
-    // var api_uri = 'http://198.38.93.150:8082'
-
-
-
+   
 
     //NH-chrome-child is to look for click inside the popup container..so it can clear the text selection if any  //text selection will be left intact otherwise
     jQuery('body').append('<div id="NH-chrome-popupover"><div class="NH-popover-content NH-chrome-child "></div></div>')
@@ -32,15 +20,11 @@ jQuery(function () {
         }
 
 
-
-
         if (window.getSelection) {
             selection = window.getSelection();
         } else if (document.selection) {
             selection = document.selection.createRange();
         }
-
-
 
         var X = $('body').offset().left;
         var Y = $('body').offset().top;
@@ -53,6 +37,8 @@ jQuery(function () {
         //no special chars allowed like url
         var format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
+     
+        
         //reverse lookup 
         if (selectionStr.startsWith("safename:")) {
             var alias = selectionStr.split(":")[1]
@@ -60,16 +46,14 @@ jQuery(function () {
             popupContent.html('loading..')
 
             
-            $.get(api_uri + '/alias/' + alias, function (data) {
+            chrome.runtime.sendMessage(
+                
+                    {contentScriptQuery: "queryAlias", alias: alias},
+                    data => {
 
-                if (window.getSelection) {
-                    if (window.getSelection().empty) {  // Chrome
-                        //   window.getSelection().empty();
-                    } else if (window.getSelection().removeAllRanges) {  // Firefox
-                        //  window.getSelection().removeAllRanges();
-                    }
-                }
-
+                        data = JSON.parse(data)
+                    
+                   
                 if(data.length > 0) {
                     //all recs contains user data..so just take the first one
                     var user_data = data[0]
@@ -91,17 +75,9 @@ jQuery(function () {
                          var status = (addr.address_status == "secure" || addr.address_status == "verified") ? `<span class="green">${addr.address_status}</span>` : `<span class="red">${addr.address_status}</span>`;
                          formattedData += `${addr.address}  Status :  ${status} ${risk_score} <br />  `;
                     }
-                       
-                       
-    
-                    
-    
+
                         popup.removeClass('not-found')
                         popupContent.html(formattedData)
-    
-    
-                    
-                 
     
                     
                 }   else {
@@ -110,25 +86,27 @@ jQuery(function () {
                     popupContent.html(formattedData)
                     //popup.hide()
                 }
-               
 
-            });
+
+
+                    }
+                        );
+
+                 
+
+            
 
         } else if (selectionStr != '' && selectionStr.length > 25 && selectionStr.length <= 42 && selectionStr.indexOf(' ') < 0 && !format.test(selectionStr)) {
             
             popup.show()
             popupContent.html('loading..')
 
-            $.get(api_uri + '/sn/' + selectionStr, function (data) {
+            chrome.runtime.sendMessage({contentScriptQuery: "querySafename", sn: selectionStr},
+                data => {
+                    data = JSON.parse(data)
+           
 
-                if (window.getSelection) {
-                    if (window.getSelection().empty) {  // Chrome
-                        //   window.getSelection().empty();
-                    } else if (window.getSelection().removeAllRanges) {  // Firefox
-                        //  window.getSelection().removeAllRanges();
-                    }
-                }
-
+                
                 if (data && data.address) {
                     var formattedData = ""
                     var profile = ""
