@@ -2,6 +2,9 @@ jQuery(function () {
 
    
 
+
+    
+
     //NH-chrome-child is to look for click inside the popup container..so it can clear the text selection if any  //text selection will be left intact otherwise
     jQuery('body').append('<div id="NH-chrome-popupover"><div class="NH-popover-content NH-chrome-child "></div></div>')
 
@@ -73,7 +76,7 @@ jQuery(function () {
                     for (var i=0; i<data.length; i++) {
                          var addr = data[i]
                          var status = (addr.address_status == "secure" || addr.address_status == "verified") ? `<span class="green">${addr.address_status}</span>` : `<span class="red">${addr.address_status}</span>`;
-                         formattedData += `${addr.address}  Status :  ${status} ${risk_score} <br />  `;
+                         formattedData += `${addr.address} <a class="NH-chrome-child" alt="copy address" title="copy address" id="copy-addr"><img  class="NH-chrome-child"   width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a> <br /> Status :  ${status} ${risk_score}  `;
                     }
 
                         popup.removeClass('not-found')
@@ -87,6 +90,9 @@ jQuery(function () {
                     //popup.hide()
                 }
 
+                $("#copy-addr").click(function () {
+                    copy(addr.address)
+                })
 
 
                     }
@@ -138,11 +144,7 @@ jQuery(function () {
                 }
 
                 $("#copy-addr").click(function () {
-                    var $temp = $("<input>");
-                    $("body").append($temp);
-                    $temp.val(selectionStr).select();
-                    document.execCommand("copy");
-                    $temp.remove();
+                    copy(selectionStr)
                 })
 
             });
@@ -160,6 +162,22 @@ jQuery(function () {
 
     });
 
+
+    function copy(txt) {
+
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(txt).select();
+        document.execCommand("copy");
+        $temp.remove();
+        $copied = $("<span class='NH-chrome-popupover-copied-msg'>")
+        $copied.html("Copied..")
+        $copied.css({top: $("#NH-chrome-popupover #copy-addr").offset().top + 30, left: $("#NH-chrome-popupover #copy-addr").offset().left + 0, position:'absolute'})
+        $("body").append($copied)
+        setTimeout(function(){ $('.NH-chrome-popupover-copied-msg').remove(); }, 1000);
+
+        
+    }
 
 
 

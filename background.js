@@ -6,7 +6,7 @@ if(location.protocol == 'https:') {
      api_uri = 'https://safename.io'
 }
 
-//var api_uri = 'http://localhost:8000'
+var api_uri = 'http://localhost:8000'
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
