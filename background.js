@@ -6,29 +6,63 @@ if(location.protocol == 'https:') {
      api_uri = 'https://safename.io'
 }
 
-var api_uri = 'http://localhost:8000'
-
+//var api_uri = 'http://localhost:8000'
+var ajaxReq = null
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
    
+
     if (request.contentScriptQuery == "queryAlias") {
       var url = api_uri + '/api/alias/' +
               encodeURIComponent(request.alias);
-      fetch(url)
-          .then(response => response.text())
-          .then(text => {sendResponse(text)})
-          .catch(error => console.log(error)
-          )
+
+              ajaxReq = $.ajax({
+                url: url, 
+                type: 'get',
+                dataType: 'JSON',
+                beforeSend : function()    {           
+                  if(ajaxReq != null) {
+                    ajaxReq.abort();
+                  }
+              },
+                success: function(json) {
+                  sendResponse(json)
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                        if(thrownError == 'abort' || thrownError == 'undefined') return;
+                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+              }); 
+
+
       return true;  // Will respond asynchronously.
     }
      else if (request.contentScriptQuery == "querySafename") {
+
+
+
       var url = api_uri + '/api/sn/' +
               encodeURIComponent(request.sn);
-      fetch(url)
-          .then(response => response.text())
-          .then(text => {sendResponse(text)})
-          .catch(error => console.log(error)
-          )
+
+
+              ajaxReq = $.ajax({
+                url: url, 
+                type: 'get',
+                dataType: 'JSON',
+                beforeSend : function()    {           
+                  if(ajaxReq != null) {
+                    ajaxReq.abort();
+                  }
+              },
+                success: function(json) {
+                  sendResponse(json)
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                        if(thrownError == 'abort' || thrownError == 'undefined') return;
+                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+              });
+  
       return true;  // Will respond asynchronously.
     }
   

@@ -54,8 +54,11 @@ jQuery(function () {
                     {contentScriptQuery: "queryAlias", alias: alias},
                     data => {
 
-                        data = JSON.parse(data)
+
+                       // data = JSON.parse(data)
                     
+                      // console.log(data);
+                     //  return;
                    
                 if(data.length > 0) {
                     //all recs contains user data..so just take the first one
@@ -67,7 +70,7 @@ jQuery(function () {
                     //     profile = `Safename: Hidden <br />`
                     //     risk_score = ""
                     // }else {
-                    profile = (user_data.address_safename) ? `Safename: <a  class="NH-chrome-child" target="_new" href="https://${user_data.address_safename.toLowerCase()}.safename.io">${user_data.address_safename}</a> <br />` : ""
+                    profile = (user_data.address_safename) ? `Safename: <a  class="NH-chrome-child" target="_new" href="http://${user_data.address_safename.toLowerCase()}.safename.io">${user_data.address_safename}</a> <br />` : ""
                             risk_score = `| Profile Risk Score : ${user_data.profile_risk_score}`
                    // }
 
@@ -109,7 +112,7 @@ jQuery(function () {
 
             chrome.runtime.sendMessage({contentScriptQuery: "querySafename", sn: selectionStr},
                 data => {
-                    data = JSON.parse(data)
+                 //   data = JSON.parse(data)
            
 
                 
@@ -124,7 +127,7 @@ jQuery(function () {
                         profile = `Safename: Hidden <br />`
                         risk_score = ""
                     } else {
-                        profile = (data.address_safename) ? `Safename: <a  class="NH-chrome-child" target="_new" href="https://${data.address_safename.toLowerCase()}.safename.io">${data.address_safename}</a> <br />` : ""
+                        profile = (data.address_safename) ? `Safename: <a  class="NH-chrome-child" target="_new" href="http://${data.address_safename.toLowerCase()}.safename.io">${data.address_safename}</a> <br />` : ""
                         risk_score = `| Profile Risk Score : ${data.profile_risk_score}`
                     }
 

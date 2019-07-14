@@ -1,7 +1,7 @@
 {
-  "name": "Safename",
-  "version": "1.0.2",
-  "description": "Get safename details",
+  "name": "Safename Pro",
+  "version": "1.0.4",
+  "description": "Auto-detect selected SafeName and Address with tooltip helper.",
   "permissions": [
     "tabs",
     "activeTab",
@@ -10,7 +10,8 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background.js",
+      "jquery.js"
     ],
     "persistent": false
   },
