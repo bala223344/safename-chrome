@@ -1,6 +1,6 @@
 {
   "name": "Safename Pro",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Auto-detect selected SafeName and Address with tooltip helper.",
   "permissions": [
     "tabs",

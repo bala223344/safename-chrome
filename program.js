@@ -1,10 +1,5 @@
 jQuery(function () {
 
-   
-
-
-    
-
     //NH-chrome-child is to look for click inside the popup container..so it can clear the text selection if any  //text selection will be left intact otherwise
     jQuery('body').append('<div id="NH-chrome-popupover"><div class="NH-popover-content NH-chrome-child "></div></div>')
 
@@ -17,6 +12,7 @@ jQuery(function () {
 
         //  return;
         //}
+     
 
         if ($(e.target).hasClass('NH-chrome-child')) {
             return;
@@ -108,13 +104,12 @@ jQuery(function () {
         } else if (selectionStr != '' && selectionStr.length > 25 && selectionStr.length <= 42 && selectionStr.indexOf(' ') < 0 && !format.test(selectionStr)) {
             
             popup.show()
+        
             popupContent.html('loading..')
 
             chrome.runtime.sendMessage({contentScriptQuery: "querySafename", sn: selectionStr},
                 data => {
                  //   data = JSON.parse(data)
-           
-
                 
                 if (data && data.address) {
                     var formattedData = ""
