@@ -101,12 +101,7 @@ jQuery(function () {
                     {contentScriptQuery: "queryAnything", str: selectionStr},
                     data => {
 
-
-                        
-                        console.log(data);
-                        
-                   
-                        if(data.error && data.error == 404) {
+                        if(data.error && data.error == "404") {
                             var formattedData = ` Records not found. Submit Using  <a class="NH-chrome-child" target="_new" href="https://safeName.io">SafeName.io</a> `;
                             popup.addClass('not-found')
                             popupContent.html(formattedData)
