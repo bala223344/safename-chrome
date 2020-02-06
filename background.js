@@ -15,7 +15,6 @@ chrome.runtime.onMessage.addListener(
     if (request.contentScriptQuery == "queryAnything") {
       var url = api_uri + '&q=' +
               request.str;
-
               ajaxReq = $.ajax({
                 url: url, 
                 type: 'get',

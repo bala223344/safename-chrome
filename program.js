@@ -118,6 +118,8 @@ jQuery(function () {
                                var address = (data.address) ? `<br /> ${data.coin_type} : ${data.address} ` : ""
                              formattedData += address
 
+                             formattedData +=  (data.address_safename)? `<br /> Safename : ${data.address_safename} `: "";
+
                         }
                      
 
@@ -128,9 +130,16 @@ jQuery(function () {
 
                         var status = (data.address_status == "secure" || data.address_status == "verified") ? `<span class="green">${data.address_status}</span>` : `<span class="red">${data.address_status}</span>`;
 
+                        
                         if(data.address) {
 
-                            formattedData += `${data.coin_type} : ${data.address} <a class="NH-chrome-child" alt="copy address" title="copy address" id="copy-addr"><img  class="NH-chrome-child"   width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a> <br /> Status :  ${status} | Address risk score : ${data.address_risk_score}  <br />`;
+                            formattedData +=  (data.address_safename)? `Safename : ${data.address_safename} <br />`: "";
+
+
+                            formattedData += `${data.coin_type} : ${data.address} <a class="NH-chrome-child" alt="copy address" title="copy address" id="copy-addr"><img  class="NH-chrome-child"   width="20" src="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/ionicons/svg/md-copy.svg"></a> <br /> Status :  ${status} | Address risk score : ${data.address_risk_score}  <br />
+
+                            `;
+
                             
                         }
                        
@@ -139,7 +148,7 @@ jQuery(function () {
 
                        
 
-                        formattedData += (data.public_profile_safename) ? `Safename: <a  class="NH-chrome-child" target="_new" href="http://${data.url}">${data.public_profile_safename}</a> <br /> ${data.public_profile_safename}.safename.io | Profile Risk Score : ${data.profile_risk_score}` : " Profile is hidden "
+                        formattedData += (data.public_profile_safename) ? `Public profile : <a  class="NH-chrome-child" target="_new" href="http://${data.url}">${data.public_profile_safename}.safename.io</a>  | Profile Risk Score : ${data.profile_risk_score}` : " Profile is hidden "
 
                       
                      
